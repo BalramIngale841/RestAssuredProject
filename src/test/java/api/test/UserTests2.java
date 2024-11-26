@@ -67,7 +67,26 @@ public class UserTests2 {
 		
 	}
 	
-	@Test(priority=3)
+	@Test(priority = 3)
+	public void testLoginUser() {
+	    logger.info("********** Logging in User ***************");
+
+	    // Send login request
+	    Response response = UserEndPoints2.loginUser(userPayload.getUsername(), userPayload.getPassword());
+	    response.then().log().all();
+
+	    // Validate status code
+	    Assert.assertEquals(response.getStatusCode(), 200, "Login failed!");
+
+	    // Validate response message
+	    String message = response.jsonPath().getString("message");
+	    Assert.assertTrue(message.contains("logged in user session"), "Unexpected response message!");
+
+	    logger.info("********** User successfully logged in ***************");
+	}
+
+	
+	@Test(priority=4)
 	public void testUpdateUserByName()
 	{
 		logger.info("********** Updating User ***************");
@@ -89,7 +108,8 @@ public class UserTests2 {
 			
 	}
 	
-	@Test(priority=4)
+	
+	@Test(priority=5)
 	public void testDeleteUserByName()
 	{
 		logger.info("**********   Deleting User  ***************");
